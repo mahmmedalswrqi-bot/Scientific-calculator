@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="حاسبة علمية متطورة من تصميم وتطوير المهندس والمطور محمد عبده السميعي">
+    <meta name="author" content="المهندس والمطور محمد عبده السميعي">
+
+    <title>الحاسبة العلمية | محمد عبده السميعي</title>
+
+    <!-- الخط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <style>
+/* =========================================================
+   Scientific Calculator
+   المهندس والمطور محمد عبده السميعي
+   Responsive Design
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    font-family: "Cairo", Arial, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(19, 92, 249, 0.14),
+            transparent 35%
+        ),
+        #07111f;
+
+    color: #f5f7fa;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   المتغيرات
+   ========================================================= */
+
+:root {
+
+    --bg: #07111f;
+    --panel: #0d1b2d;
+    --button: #162b43;
+    --button-hover: #203d5e;
+
+    --text: #f5f7fa;
+    --muted: #91a3b8;
+
+    --primary: #2563eb;
+    --primary-2: #4f46e5;
+
+    --danger: #dc2626;
+
+    --border: rgba(255, 255, 255, 0.08);
+
+    --radius: 20px;
+}
+
+
+/* =========================================================
+   التطبيق الرئيسي
+   ========================================================= */
+
+.app {
+
+    width: min(100%, 1180px);
+
+    margin: 0 auto;
+
+    padding:
+        clamp(12px, 2vw, 25px);
+
+}
+
+
+/* =========================================================
+   Header
+   ========================================================= */
+
+.topbar {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+.brand-icon {
+
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-2)
+        );
+
+    font-size: 27px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 25px
+        rgba(37, 99, 235, 0.28);
+}
+
+
+.brand h1 {
+
+    font-size:
+        clamp(17px, 2vw, 24px);
+
+    line-height: 1.3;
+
+    white-space: nowrap;
+}
+
+
+.brand p {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(9px, 1vw, 12px);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.top-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    flex-shrink: 0;
+}
+
+
+.mode-btn,
+.icon-btn {
+
+    min-width: 45px;
+
+    height: 40px;
+
+    padding: 0 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: var(--panel);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   التخطيط الرئيسي
+   ========================================================= */
+
+.calculator-container {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 760px)
+        minmax(250px, 1fr);
+
+    justify-content: center;
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   الحاسبة
+   ========================================================= */
+
+.calculator {
+
+    width: 100%;
+
+    min-width: 0;
+
+    background:
+        rgba(13, 27, 45, 0.96);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.30);
+}
+
+
+/* =========================================================
+   الشاشة
+   ========================================================= */
+
+.display {
+
+    width: 100%;
+
+    min-height: 150px;
+
+    padding:
+        clamp(15px, 2.5vw, 24px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-end;
+
+    overflow: hidden;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+.display-info {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+.expression {
+
+    width: 100%;
+
+    min-height: 28px;
+
+    margin-top: 8px;
+
+    direction: ltr;
+
+    text-align: right;
+
+    color: #91a3b8;
+
+    font-size:
+        clamp(14px, 2vw, 18px);
+
+    white-space: nowrap;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+}
+
+
+.result {
+
+    width: 100%;
+
+    margin-top: 4px;
+
+    direction: ltr;
+
+    text-align: right;
+
+    color: white;
+
+    font-size:
+        clamp(30px, 5vw, 52px);
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+}
+
+
+/* =========================================================
+   أزرار الدوال العلمية
+   ========================================================= */
+
+.function-grid {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 7px;
+
+    padding:
+        14px 16px 7px;
+}
+
+
+.function-grid button {
+
+    width: 100%;
+
+    min-width: 0;
+
+    height: 44px;
+
+    padding: 0 3px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid rgba(59, 130, 246, 0.10);
+
+    background: #10233a;
+
+    color: #8eb8ff;
+
+    font-family: inherit;
+
+    font-size:
+        clamp(10px, 1.4vw, 14px);
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease;
+}
+
+
+.function-grid button:hover {
+
+    background: #193754;
+}
+
+
+.function-grid button:active {
+
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   الذاكرة
+   ========================================================= */
+
+.memory-grid {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 7px;
+
+    padding:
+        7px 16px;
+}
+
+
+.memory-grid button {
+
+    width: 100%;
+
+    height: 36px;
+
+    min-width: 0;
+
+    border-radius: 9px;
+
+    background: #0b1a2c;
+
+    color: #a9b9cc;
+
+    font-family: inherit;
+
+    font-size:
+        clamp(10px, 1.2vw, 12px);
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   لوحة الأرقام
+   ========================================================= */
+
+.keypad {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 8px;
+
+    padding:
+        8px 16px 17px;
+}
+
+
+.keypad button {
+
+    width: 100%;
+
+    min-width: 0;
+
+    height: 57px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.035);
+
+    background: var(--button);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size:
+        clamp(16px, 2vw, 21px);
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.12s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.keypad button:hover {
+
+    background: var(--button-hover);
+
+    box-shadow:
+        0 5px 15px
+        rgba(0, 0, 0, 0.16);
+}
+
+
+.keypad button:active {
+
+    transform: scale(0.94);
+}
+
+
+.keypad .operator {
+
+    background: #1b3554;
+
+    color: #72a8ff;
+}
+
+
+.keypad .danger {
+
+    background:
+        rgba(220, 38, 38, 0.17);
+
+    color: #ff7373;
+}
+
+
+.keypad .equals {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-2)
+        );
+
+    color: white;
+
+    box-shadow:
+        0 7px 20px
+        rgba(37, 99, 235, 0.25);
+}
+
+
+.keypad .equals:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b82f6,
+            #6366f1
+        );
+}
+
+
+.zero {
+
+    grid-column: span 2;
+}
+
+
+/* =========================================================
+   سجل العمليات
+   ========================================================= */
+
+.history-panel {
+
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 560px;
+
+    padding: 18px;
+
+    background:
+        rgba(13, 27, 45, 0.96);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+}
+
+
+.history-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 14px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+.history-header h2 {
+
+    font-size: 17px;
+}
+
+
+.history-header span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+.history-header button {
+
+    height: 34px;
+
+    padding: 0 10px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background:
+        rgba(220, 38, 38, 0.10);
+
+    color: #ff7373;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+
+.history-list {
+
+    width: 100%;
+
+    max-height: 480px;
+
+    margin-top: 12px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding-right: 2px;
+}
+
+
+.history-item {
+
+    width: 100%;
+
+    margin-bottom: 8px;
+
+    padding: 11px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.history-item:hover {
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    transform: translateX(-2px);
+}
+
+
+.history-expression {
+
+    direction: ltr;
+
+    text-align: left;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.history-result {
+
+    margin-top: 3px;
+
+    direction: ltr;
+
+    text-align: left;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.empty-history {
+
+    padding: 45px 10px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
+footer {
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 5px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+
+footer strong {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #dbeafe;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   الوضع الفاتح
+   ========================================================= */
+
+body.light {
+
+    --bg: #eef3f8;
+
+    --panel: #ffffff;
+
+    --button: #edf2f7;
+
+    --button-hover: #e2e8f0;
+
+    --text: #172033;
+
+    --muted: #64748b;
+
+    --border: rgba(0, 0, 0, 0.08);
+}
+
+
+body.light .calculator,
+body.light .history-panel {
+
+    background:
+        rgba(255, 255, 255, 0.96);
+}
+
+
+body.light .result {
+
+    color: #111827;
+}
+
+
+body.light .function-grid button {
+
+    background: #eef4ff;
+}
+
+
+body.light .memory-grid button {
+
+    background: #f1f5f9;
+}
+
+
+body.light .keypad .operator {
+
+    background: #e5efff;
+}
+
+
+body.light .brand p {
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   Scrollbar
+   ========================================================= */
+
+::-webkit-scrollbar {
+
+    width: 6px;
+    height: 6px;
+}
+
+
+::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background: #29415e;
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   شاشات الكمبيوتر المتوسطة
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .calculator-container {
+
+        grid-template-columns:
+            minmax(0, 680px)
+            minmax(220px, 300px);
+
+        gap: 14px;
+    }
+
+    .history-panel {
+
+        padding: 15px;
+    }
+
+    .keypad {
+
+        gap: 7px;
+    }
+
+    .keypad button {
+
+        height: 53px;
+    }
+}
+
+
+/* =========================================================
+   التابلت
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .calculator-container {
+
+        grid-template-columns: 1fr;
+    }
+
+    .calculator {
+
+        width: 100%;
+
+        max-width: 700px;
+
+        margin: 0 auto;
+    }
+
+    .history-panel {
+
+        width: 100%;
+
+        max-width: 700px;
+
+        min-height: auto;
+
+        margin: 0 auto;
+    }
+
+    .history-list {
+
+        max-height: 250px;
+    }
+}
+
+
+/* =========================================================
+   الجوال
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .app {
+
+        width: 100%;
+
+        padding:
+            8px;
+    }
+
+
+    .topbar {
+
+        margin-bottom: 10px;
+    }
+
+
+    .brand {
+
+        gap: 8px;
+
+        min-width: 0;
+    }
+
+
+    .brand-icon {
+
+        width: 42px;
+        height: 42px;
+
+        flex-basis: 42px;
+
+        border-radius: 12px;
+
+        font-size: 22px;
+    }
+
+
+    .brand h1 {
+
+        font-size: 15px;
+    }
+
+
+    .brand p {
+
+        max-width: 190px;
+
+        font-size: 8px;
+    }
+
+
+    .mode-btn,
+    .icon-btn {
+
+        min-width: 38px;
+
+        height: 34px;
+
+        padding: 0 8px;
+
+        font-size: 11px;
+    }
+
+
+    .calculator {
+
+        border-radius: 16px;
+    }
+
+
+    .display {
+
+        min-height: 125px;
+
+        padding: 13px;
+    }
+
+
+    .display-info {
+
+        font-size: 9px;
+    }
+
+
+    .expression {
+
+        min-height: 22px;
+
+        font-size: 12px;
+    }
+
+
+    .result {
+
+        font-size: 32px;
+    }
+
+
+    .function-grid {
+
+        gap: 5px;
+
+        padding:
+            9px 9px 5px;
+    }
+
+
+    .function-grid button {
+
+        height: 37px;
+
+        border-radius: 8px;
+
+        font-size: 9px;
+    }
+
+
+    .memory-grid {
+
+        gap: 5px;
+
+        padding:
+            5px 9px;
+    }
+
+
+    .memory-grid button {
+
+        height: 32px;
+
+        border-radius: 7px;
+
+        font-size: 9px;
+    }
+
+
+    .keypad {
+
+        gap: 6px;
+
+        padding:
+            6px 9px 10px;
+    }
+
+
+    .keypad button {
+
+        height: 51px;
+
+        border-radius: 10px;
+
+        font-size: 17px;
+    }
+
+
+    .history-panel {
+
+        border-radius: 16px;
+
+        padding: 13px;
+    }
+
+
+    .history-header h2 {
+
+        font-size: 14px;
+    }
+
+
+    .history-list {
+
+        max-height: 220px;
+    }
+}
+
+
+/* =========================================================
+   الجوالات الصغيرة جدًا
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .app {
+
+        padding: 5px;
+    }
+
+
+    .brand-icon {
+
+        width: 37px;
+        height: 37px;
+
+        flex-basis: 37px;
+
+        font-size: 19px;
+    }
+
+
+    .brand h1 {
+
+        font-size: 13px;
+    }
+
+
+    .brand p {
+
+        max-width: 145px;
+
+        font-size: 7px;
+    }
+
+
+    .top-actions {
+
+        gap: 4px;
+    }
+
+
+    .mode-btn,
+    .icon-btn {
+
+        min-width: 25px;
+
+        height: 31px;
+
+        padding: 0 5px;
+
+        font-size: 9px;
+    }
+
+
+    .display {
+
+        min-height: 112px;
+
+        padding: 10px;
+    }
+
+
+    .result {
+
+        font-size: 27px;
+    }
+
+
+    .function-grid {
+
+        gap: 3px;
+
+        padding: 7px;
+    }
+
+
+    .function-grid button {
+
+        height: 34px;
+
+        font-size: 8px;
+    }
+
+
+    .memory-grid {
+
+        gap: 3px;
+
+        padding:
+            4px 7px;
+    }
+
+
+    .memory-grid button {
+
+        height: 29px;
+
+        font-size: 8px;
+    }
+
+
+    .keypad {
+
+        gap: 4px;
+
+        padding:
+            5px 7px 8px;
+    }
+
+
+    .keypad button {
+
+        height: 46px;
+
+        border-radius: 8px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   منع التمدد بسبب النصوص الطويلة
+   ========================================================= */
+
+.calculator *,
+.history-panel * {
+
+    max-width: 100%;
+}
+
+
+button {
+
+    user-select: none;
+
+    -webkit-tap-highlight-color: transparent;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- الرأس -->
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="brand-icon">∑</div>
+
+            <div>
+                <h1>الحاسبة العلمية</h1>
+                <p>المهندس والمطور محمد عبده السميعي</p>
+            </div>
+        </div>
+
+        <div class="top-actions">
+            <button id="angleMode" class="mode-btn">DEG</button>
+            <button id="themeBtn" class="icon-btn">☀</button>
+        </div>
+
+    </header>
+
+
+    <!-- الشاشة -->
+    <main class="calculator-container">
+
+        <section class="calculator">
+
+            <div class="display">
+
+                <div class="display-info">
+                    <span id="memoryIndicator">M: 0</span>
+                    <span id="angleIndicator">DEG</span>
+                </div>
+
+                <div id="expression" class="expression"></div>
+
+                <div id="result" class="result">
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- أزرار الوظائف -->
+            <div class="function-grid">
+
+                <button class="function" data-action="sin">sin</button>
+                <button class="function" data-action="cos">cos</button>
+                <button class="function" data-action="tan">tan</button>
+                <button class="function" data-action="log">log</button>
+                <button class="function" data-action="ln">ln</button>
+
+                <button class="function" data-action="asin">sin⁻¹</button>
+                <button class="function" data-action="acos">cos⁻¹</button>
+                <button class="function" data-action="atan">tan⁻¹</button>
+                <button class="function" data-action="sqrt">√</button>
+                <button class="function" data-action="square">x²</button>
+
+                <button class="function" data-action="factorial">x!</button>
+                <button class="function" data-action="power">xʸ</button>
+                <button class="function" data-action="inverse">1/x</button>
+                <button class="function" data-action="abs">|x|</button>
+                <button class="function" data-action="percent">%</button>
+
+            </div>
+
+
+            <!-- الذاكرة -->
+            <div class="memory-grid">
+
+                <button data-memory="MC">MC</button>
+                <button data-memory="MR">MR</button>
+                <button data-memory="M+">M+</button>
+                <button data-memory="M-">M−</button>
+                <button data-memory="MS">MS</button>
+
+            </div>
+
+
+            <!-- لوحة الأرقام -->
+            <div class="keypad">
+
+                <button class="danger" data-action="clear">AC</button>
+                <button data-action="backspace">⌫</button>
+                <button data-value="(">(</button>
+                <button data-value=")">)</button>
+                <button class="operator" data-value="/">÷</button>
+
+                <button data-value="7">7</button>
+                <button data-value="8">8</button>
+                <button data-value="9">9</button>
+                <button class="operator" data-value="*">×</button>
+                <button data-action="pi">π</button>
+
+                <button data-value="4">4</button>
+                <button data-value="5">5</button>
+                <button data-value="6">6</button>
+                <button class="operator" data-value="-">−</button>
+                <button data-action="e">e</button>
+
+                <button data-value="1">1</button>
+                <button data-value="2">2</button>
+                <button data-value="3">3</button>
+                <button class="operator" data-value="+">+</button>
+                <button data-action="ans">ANS</button>
+
+                <button data-value="0" class="zero">0</button>
+                <button data-value=".">.</button>
+                <button data-action="negate">±</button>
+                <button class="equals" data-action="calculate">=</button>
+
+            </div>
+
+        </section>
+
+
+        <!-- السجل -->
+        <aside class="history-panel">
+
+            <div class="history-header">
+                <div>
+                    <h2>سجل العمليات</h2>
+                    <span>History</span>
+                </div>
+
+                <button id="clearHistory">مسح</button>
+            </div>
+
+            <div id="historyList" class="history-list">
+                <div class="empty-history">
+                    لا توجد عمليات بعد
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+
+    <!-- التذييل -->
+    <footer>
+        <strong>المهندس والمطور محمد عبده السميعي</strong>
+        <span>Scientific Calculator © 2026</span>
+    </footer>
+
+</div>
+
+<!-- JavaScript -->
+<script>
+"use strict";
+
+/*
+    =====================================================
+    الحاسبة العلمية المتطورة
+    المهندس والمطور محمد عبده السميعي
+    =====================================================
+*/
+
+
+// ===============================
+// المتغيرات
+// ===============================
+
+let expression = "";
+let lastAnswer = 0;
+let memory = 0;
+
+let angleMode = "DEG";
+
+const expressionElement =
+    document.getElementById("expression");
+
+const resultElement =
+    document.getElementById("result");
+
+const historyList =
+    document.getElementById("historyList");
+
+const memoryIndicator =
+    document.getElementById("memoryIndicator");
+
+const angleIndicator =
+    document.getElementById("angleIndicator");
+
+
+// ===============================
+// تحديث الشاشة
+// ===============================
+
+function updateDisplay() {
+
+    expressionElement.textContent =
+        expression || "";
+
+    if (!expression) {
+        resultElement.textContent = "0";
+        return;
+    }
+
+    try {
+
+        const preview =
+            calculateExpression(expression);
+
+        if (Number.isFinite(preview)) {
+
+            resultElement.textContent =
+                formatNumber(preview);
+        }
+
+    } catch {
+
+        resultElement.textContent = "0";
+    }
+}
+
+
+// ===============================
+// تنسيق الأرقام
+// ===============================
+
+function formatNumber(number) {
+
+    if (!Number.isFinite(number)) {
+        return "Error";
+    }
+
+    if (Math.abs(number) < 1e-12) {
+        number = 0;
+    }
+
+    return Number(
+        number.toPrecision(12)
+    ).toString();
+}
+
+
+// ===============================
+// تحويل الدرجات
+// ===============================
+
+function toRadians(value) {
+
+    if (angleMode === "DEG") {
+        return value * Math.PI / 180;
+    }
+
+    return value;
+}
+
+
+// ===============================
+// الدوال المثلثية
+// ===============================
+
+function sin(value) {
+    return Math.sin(toRadians(value));
+}
+
+function cos(value) {
+    return Math.cos(toRadians(value));
+}
+
+function tan(value) {
+    return Math.tan(toRadians(value));
+}
+
+
+// ===============================
+// الدوال العكسية
+// ===============================
+
+function asin(value) {
+
+    const result = Math.asin(value);
+
+    return angleMode === "DEG"
+        ? result * 180 / Math.PI
+        : result;
+}
+
+function acos(value) {
+
+    const result = Math.acos(value);
+
+    return angleMode === "DEG"
+        ? result * 180 / Math.PI
+        : result;
+}
+
+function atan(value) {
+
+    const result = Math.atan(value);
+
+    return angleMode === "DEG"
+        ? result * 180 / Math.PI
+        : result;
+}
+
+
+// ===============================
+// Factorial
+// ===============================
+
+function factorial(n) {
+
+    if (!Number.isFinite(n)) {
+        throw new Error("Invalid number");
+    }
+
+    if (n < 0) {
+        throw new Error("Factorial error");
+    }
+
+    if (!Number.isInteger(n)) {
+        throw new Error("Factorial requires integer");
+    }
+
+    if (n > 170) {
+        throw new Error("Number too large");
+    }
+
+    let result = 1;
+
+    for (let i = 2; i <= n; i++) {
+        result *= i;
+    }
+
+    return result;
+}
+
+
+// ===============================
+// استبدال الرموز
+// ===============================
+
+function prepareExpression(input) {
+
+    let exp = input;
+
+    exp = exp
+        .replace(/×/g, "*")
+        .replace(/÷/g, "/")
+        .replace(/−/g, "-")
+        .replace(/π/g, "PI")
+        .replace(/\be\b/g, "E");
+
+    exp = exp.replace(
+        /(\d+(\.\d+)?)%/g,
+        "($1/100)"
+    );
+
+    return exp;
+}
+
+
+// ===============================
+// تقييم العملية
+// ===============================
+
+function calculateExpression(input) {
+
+    let exp =
+        prepareExpression(input);
+
+    /*
+        تحويل الأس
+    */
+
+    exp = exp.replace(
+        /(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g,
+        "Math.pow($1,$2)"
+    );
+
+    /*
+        حماية البيئة
+    */
+
+    const allowed =
+        /^[0-9+\-*/().,\sA-Za-z_]+$/;
+
+    if (!allowed.test(exp)) {
+        throw new Error("Invalid expression");
+    }
+
+    /*
+        الدوال المتاحة
+    */
+
+    const scope = {
+
+        PI: Math.PI,
+        E: Math.E,
+
+        sin,
+        cos,
+        tan,
+
+        asin,
+        acos,
+        atan,
+
+        sqrt: Math.sqrt,
+
+        log: Math.log10,
+
+        ln: Math.log,
+
+        abs: Math.abs,
+
+        pow: Math.pow,
+
+        factorial,
+
+        Math
+    };
+
+    /*
+        تقييم التعبير
+    */
+
+    const keys =
+        Object.keys(scope);
+
+    const values =
+        Object.values(scope);
+
+    const fn =
+        new Function(
+            ...keys,
+            `"use strict"; return (${exp});`
+        );
+
+    const result =
+        fn(...values);
+
+    if (!Number.isFinite(result)) {
+        throw new Error("Math error");
+    }
+
+    return result;
+}
+
+
+// ===============================
+// إضافة قيمة
+// ===============================
+
+function appendValue(value) {
+
+    expression += value;
+
+    updateDisplay();
+}
+
+
+// ===============================
+// العمليات
+// ===============================
+
+function calculate() {
+
+    if (!expression) return;
+
+    try {
+
+        const original =
+            expression;
+
+        const result =
+            calculateExpression(expression);
+
+        lastAnswer = result;
+
+        addHistory(
+            original,
+            result
+        );
+
+        expression =
+            formatNumber(result);
+
+        updateDisplay();
+
+    } catch {
+
+        resultElement.textContent =
+            "Error";
+    }
+}
+
+
+// ===============================
+// إضافة سجل
+// ===============================
+
+function addHistory(
+    exp,
+    result
+) {
+
+    const empty =
+        document.querySelector(
+            ".empty-history"
+        );
+
+    if (empty) {
+        empty.remove();
+    }
+
+    const item =
+        document.createElement("div");
+
+    item.className =
+        "history-item";
+
+    item.innerHTML = `
+        <div class="history-expression">
+            ${escapeHTML(exp)}
+        </div>
+
+        <div class="history-result">
+            = ${escapeHTML(
+                formatNumber(result)
+            )}
+        </div>
+    `;
+
+    item.addEventListener(
+        "click",
+        () => {
+
+            expression =
+                String(result);
+
+            updateDisplay();
+        }
+    );
+
+    historyList.prepend(item);
+}
+
+
+// ===============================
+// حماية HTML
+// ===============================
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// ===============================
+// الدوال العلمية
+// ===============================
+
+function scientificAction(action) {
+
+    let value;
+
+    try {
+
+        switch (action) {
+
+            case "sin":
+
+                value =
+                    `sin(${expression || 0})`;
+
+                break;
+
+            case "cos":
+
+                value =
+                    `cos(${expression || 0})`;
+
+                break;
+
+            case "tan":
+
+                value =
+                    `tan(${expression || 0})`;
+
+                break;
+
+            case "asin":
+
+                value =
+                    `asin(${expression || 0})`;
+
+                break;
+
+            case "acos":
+
+                value =
+                    `acos(${expression || 0})`;
+
+                break;
+
+            case "atan":
+
+                value =
+                    `atan(${expression || 0})`;
+
+                break;
+
+            case "log":
+
+                value =
+                    `log(${expression || 0})`;
+
+                break;
+
+            case "ln":
+
+                value =
+                    `ln(${expression || 0})`;
+
+                break;
+
+            case "sqrt":
+
+                value =
+                    `sqrt(${expression || 0})`;
+
+                break;
+
+            case "square":
+
+                value =
+                    `pow(${expression || 0},2)`;
+
+                break;
+
+            case "power":
+
+                value =
+                    `${expression || 0}^`;
+
+                break;
+
+            case "factorial":
+
+                value =
+                    `factorial(${expression || 0})`;
+
+                break;
+
+            case "inverse":
+
+                value =
+                    `1/(${expression || 0})`;
+
+                break;
+
+            case "abs":
+
+                value =
+                    `abs(${expression || 0})`;
+
+                break;
+
+            case "percent":
+
+                value =
+                    `(${expression || 0})%`;
+
+                break;
+
+            case "pi":
+
+                value = "π";
+
+                break;
+
+            case "e":
+
+                value = "e";
+
+                break;
+
+            case "ans":
+
+                value =
+                    formatNumber(lastAnswer);
+
+                break;
+        }
+
+        expression = value;
+
+        updateDisplay();
+
+    } catch {
+
+        resultElement.textContent =
+            "Error";
+    }
+}
+
+
+// ===============================
+// زر المسح
+// ===============================
+
+function clearCalculator() {
+
+    expression = "";
+
+    updateDisplay();
+}
+
+
+// ===============================
+// الحذف
+// ===============================
+
+function backspace() {
+
+    expression =
+        expression.slice(0, -1);
+
+    updateDisplay();
+}
+
+
+// ===============================
+// تغيير الإشارة
+// ===============================
+
+function negate() {
+
+    if (!expression) return;
+
+    expression =
+        `(-(${expression}))`;
+
+    updateDisplay();
+}
+
+
+// ===============================
+// الذاكرة
+// ===============================
+
+function memoryAction(action) {
+
+    try {
+
+        const current =
+            expression
+                ? calculateExpression(expression)
+                : 0;
+
+        switch (action) {
+
+            case "MC":
+
+                memory = 0;
+
+                break;
+
+            case "MR":
+
+                expression =
+                    formatNumber(memory);
+
+                break;
+
+            case "M+":
+
+                memory += current;
+
+                break;
+
+            case "M-":
+
+                memory -= current;
+
+                break;
+
+            case "MS":
+
+                memory = current;
+
+                break;
+        }
+
+        memoryIndicator.textContent =
+            `M: ${formatNumber(memory)}`;
+
+        updateDisplay();
+
+    } catch {
+
+        resultElement.textContent =
+            "Error";
+    }
+}
+
+
+// ===============================
+// الأزرار
+// ===============================
+
+document
+    .querySelectorAll("[data-value]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                appendValue(
+                    button.dataset.value
+                );
+            }
+        );
+    });
+
+
+document
+    .querySelectorAll("[data-action]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const action =
+                    button.dataset.action;
+
+                if (action === "calculate") {
+
+                    calculate();
+
+                } else if (action === "clear") {
+
+                    clearCalculator();
+
+                } else if (action === "backspace") {
+
+                    backspace();
+
+                } else if (action === "negate") {
+
+                    negate();
+
+                } else {
+
+                    scientificAction(action);
+                }
+            }
+        );
+    });
+
+
+// ===============================
+// أزرار الذاكرة
+// ===============================
+
+document
+    .querySelectorAll("[data-memory]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                memoryAction(
+                    button.dataset.memory
+                );
+            }
+        );
+    });
+
+
+// ===============================
+// تغيير DEG / RAD
+// ===============================
+
+document
+    .getElementById("angleMode")
+    .addEventListener(
+        "click",
+        () => {
+
+            angleMode =
+                angleMode === "DEG"
+                    ? "RAD"
+                    : "DEG";
+
+            document
+                .getElementById(
+                    "angleMode"
+                )
+                .textContent =
+                angleMode;
+
+            angleIndicator.textContent =
+                angleMode;
+
+            updateDisplay();
+        }
+    );
+
+
+// ===============================
+// الوضع الليلي / الفاتح
+// ===============================
+
+document
+    .getElementById("themeBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            document.body.classList.toggle(
+                "light"
+            );
+
+            const light =
+                document.body.classList.contains(
+                    "light"
+                );
+
+            document.getElementById(
+                "themeBtn"
+            ).textContent =
+                light ? "🌙" : "☀";
+        }
+    );
+
+
+// ===============================
+// مسح السجل
+// ===============================
+
+document
+    .getElementById("clearHistory")
+    .addEventListener(
+        "click",
+        () => {
+
+            historyList.innerHTML = `
+                <div class="empty-history">
+                    لا توجد عمليات بعد
+                </div>
+            `;
+        }
+    );
+
+
+// ===============================
+// لوحة المفاتيح
+// ===============================
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        const key =
+            event.key;
+
+        if (
+            /^[0-9.]$/.test(key) ||
+            ["+", "-", "*", "/", "(", ")"].includes(key)
+        ) {
+
+            appendValue(key);
+
+            return;
+        }
+
+        if (key === "Enter" || key === "=") {
+
+            event.preventDefault();
+
+            calculate();
+
+            return;
+        }
+
+        if (key === "Backspace") {
+
+            backspace();
+
+            return;
+        }
+
+        if (key === "Escape") {
+
+            clearCalculator();
+
+            return;
+        }
+    }
+);
+
+
+// ===============================
+// تشغيل أولي
+// ===============================
+
+updateDisplay();
+</script>
+
+</body>
+</html>
